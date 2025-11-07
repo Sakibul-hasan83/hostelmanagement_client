@@ -7,7 +7,7 @@ import Footer from './src/ShareElements/Footer';
 
 const MainOutlet = () => {
   return (
-    <div className='w-full'>
+    <div className=''>
              <Navbar></Navbar>
              <Outlet></Outlet>
              <Footer></Footer>
