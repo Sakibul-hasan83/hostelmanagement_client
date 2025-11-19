@@ -1,88 +1,95 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from "react";
+import AuthContext from "./AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+
+
+  const {login,logout}=useContext(AuthContext)
+const navigate = useNavigate()
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
 
-    // Email & Password validation
-    if (!email || !password) {
-      setError('Please fill in all fields');
-      setLoading(false);
-      return;
-    }
+    const user = { email, password };
+    console.log(user);
 
-    // TODO: Connect with backend or Firebase Authentication
-    // Example Firebase pseudo code:
-    /*
-      signInWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-          console.log('Login Success', userCredential.user);
-          // Redirect to dashboard
-        })
-        .catch(error => setError(error.message))
-        .finally(() => setLoading(false));
-    */
+    login(email,password)
+    .then(result =>{
+      console.log("Successfully login ",result.user)
+      alert("Successfully login")
+      // return logout ()
+    })
+    .then(()=>{
 
-    setTimeout(() => {
-      console.log('Email:', email, 'Password:', password);
-      alert('Login simulated successfully!');
-      setLoading(false);
-    }, 1000);
+        navigate("/")
+    })
+
+     .catch(error=>console.log(error.message))
+
+
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-700 via-emerald-600 to-cyan-700 p-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-center text-teal-700 mb-6">Hostel Login</h2>
 
-        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
+
+  return (
+ <div
+      className="min-h-screen flex items-center justify-center p-4 
+      bg-gradient-to-br from-teal-700 via-emerald-600 to-cyan-700"
+    >
+      <div className="w-full max-w-md bg-white shadow-xl rounded-xl p-8">
+        <h1 className="text-3xl font-bold text-center text-teal-700 mb-6">
+         Login Account
+        </h1>
 
         <form onSubmit={handleLogin} className="space-y-4">
+          {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label className="text-gray-700 font-medium">Email</label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
               placeholder="Enter your email"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+              className="input input-bordered w-full rounded-lg mt-1 
+              focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+              required
             />
           </div>
 
+          {/* Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label className="text-gray-700 font-medium">Password</label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
               placeholder="Enter your password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+              className="input input-bordered w-full rounded-lg mt-1 
+              focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+              required
             />
           </div>
 
+          {/* Sign Up Button */}
           <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-semibold py-2 rounded-lg shadow-md transition-all duration-300 disabled:opacity-50"
+            className="w-full py-3 rounded-lg text-white font-semibold shadow-md 
+            bg-emerald-500 hover:bg-emerald-400 transition-all duration-300"
           >
-            {loading ? 'Logging in...' : 'Login'}
+         Login
           </button>
         </form>
 
-        <p className="text-sm text-gray-500 mt-4 text-center">
-          Don't have an account? <Link to={'/signup'} className="text-teal-600 font-semibold hover:underline">Register</Link>  
+        <p className="text-center text-gray-600 mt-4">
+          Already have an account?{" "}
+          <Link to={'/signup'} className="text-teal-600 font-semibold hover:underline" href="#">
+           signup
+          </Link>
         </p>
       </div>
     </div>
   );
-};
+}
 
 export default Login;
