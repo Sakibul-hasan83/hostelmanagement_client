@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
 import AuthContext from "./AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
 
 
-  const {login,logout}=useContext(AuthContext)
+  const {login,logout,user}=useContext(AuthContext)
 const navigate = useNavigate()
 
-  const handleLogin = (e) => {
+  const handleLogin =async(e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
@@ -17,9 +18,14 @@ const navigate = useNavigate()
     const user = { email, password };
     console.log(user);
 
+axios.post("http://localhost:5000/users",user,{withCredentials:true})
+.then(res=>console.log("Response from backend:",res.data))
+
+
     login(email,password)
     .then(result =>{
-      console.log("Successfully login ",result.user)
+      console.log("Successfully login ",result.user);
+
       alert("Successfully login")
       // return logout ()
     })
@@ -29,7 +35,6 @@ const navigate = useNavigate()
     })
 
      .catch(error=>console.log(error.message))
-
 
   };
 

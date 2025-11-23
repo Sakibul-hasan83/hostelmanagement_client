@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import AuthContext from '../AuthenticationParts/AuthContext';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const {user,logout}=useContext(AuthContext)
+
+const handleLogout=()=>{
+
+  logout()
+  
+}
 
   const links = (
     <>
@@ -45,9 +53,11 @@ const Navbar = () => {
 
         {/* Login Button */}
         <div className="absolute right-4 lg:static" >
-            <Link to={'/login'} className="btn bg-emerald-500 hover:bg-emerald-400 border-none text-white font-semibold shadow-md hover:scale-105 transform transition-all duration-300 text-sm sm:text-base">
+          {
+            user?  <><button onClick={handleLogout} className="btn bg-red-500 hover:bg-emerald-400 border-none text-white font-semibold shadow-md hover:scale-105 transform transition-all duration-300 text-sm sm:text-base">Logout</button></>:<>  <Link to={'/login'} className="btn bg-emerald-500 hover:bg-emerald-400 border-none text-white font-semibold shadow-md hover:scale-105 transform transition-all duration-300 text-sm sm:text-base">
           Login
-          </Link>
+          </Link></>
+          }
         </div>
       </div>
 

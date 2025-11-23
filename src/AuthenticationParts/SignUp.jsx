@@ -16,6 +16,9 @@ const navigate = useNavigate()
     const user = { email, password };
     console.log(user);
 
+
+
+
     signup(email,password)
     .then(result =>{
       console.log("Successfully registerd ",result.user)
